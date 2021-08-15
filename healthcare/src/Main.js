@@ -14,8 +14,12 @@ class Test extends Component {
     render() {
         return (
             <div>
-                <button onClick={this.medicine}>표시하기</button>
-                {JSON.stringify(this.state.intake)}
+                <button onClick={this.medicine}>표시하기</button><br/>
+                {this.state.intake.map(intake_element => (
+                <div>
+                    <li>{intake_element.word_id}번 {intake_element.volume}{intake_element.unit}</li>
+                </div>
+            ))}
             </div>
         );
     }
