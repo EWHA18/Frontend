@@ -6,6 +6,8 @@ const Main = () => {
     const [id,setId] = useState('');
     const [name,setName] = useState('');
     const [num,setNum] = useState(0);
+    const [intake,setIntake] = useState([]);
+
     const onChangeName = (e) => {
         setName(e.target.value);
     }
@@ -20,6 +22,8 @@ const Main = () => {
         axios.post("http://localhost:5000/api/sendintake",data).then(
             response=>{
                 console.log(data);
+                const answer = axios.get("https://64015d57-ae66-4061-9d92-c81956d3738e.mock.pstmn.io/test");
+                setIntake(answer.data.data.intake);
             }
         )
     }
@@ -34,8 +38,13 @@ const Main = () => {
             <input type="number" value={num} placeholder="섭취량을 입력하세요." onChange={onChangeNum}></input>
             <button onClick={onClick}>성분 검색</button><br/>
             </div>
+
+            {intake.map(intake_element => (
+                <div>
+                    <li>{intake_element.word_id}번 {intake_element.volume}{intake_element.unit}</li>
+                </div>
+            ))}
         </div>
     );
-}
-
+                }
 export default Main;
