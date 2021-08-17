@@ -1,9 +1,11 @@
 import React from 'react';
-import Test from './Main.js';
+import Main from './Main.js';
+import './index.css';
+
 function App() {
   return (
-    <div className="App">
-      <Test/>
+    <div>
+      <Main/>
     </div>
   );
 }
