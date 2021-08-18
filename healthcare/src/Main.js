@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './index.css';
+const list=[];
 const Main = () => {
     const [id,setId] = useState(0);
     const [name,setName] = useState('');
     const [num,setNum] = useState(0);
     const [intake,setIntake] = useState([]);
-    const [list,setList] = useState([]);
     
     const onChangeName = (e) => {
         setName(e.target.value);
@@ -18,14 +18,13 @@ const Main = () => {
         setNum(e.target.value);
     }    
     const onClick = async() => {
-        const data = {"medicine_id": id,"medicine_name": name, "num":num};
-        setList(list => [...list,data]);
+        list.push({"medicine_id": id,"medicine_name": name, "num":num});
         await axios.post("https://da12cbf1-ea38-4684-8c59-5cec89c3f728.mock.pstmn.io/input",list).then(
-            response=>{
-                console.log(list);        
+            async response=>{
+                console.log(list);
+                const answer = await axios.get("https://64015d57-ae66-4061-9d92-c81956d3738e.mock.pstmn.io/test");
+                setIntake(answer.data.data.intake);        
             })
-        const answer = await axios.get("https://64015d57-ae66-4061-9d92-c81956d3738e.mock.pstmn.io/test");
-        setIntake(answer.data.data.intake);
     }
     return(
         <div>
