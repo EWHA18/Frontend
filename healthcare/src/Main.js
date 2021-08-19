@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './index.css';
-const list=[];
+const data=[];
 const Main = () => {
     const [id,setId] = useState(0);
     const [name,setName] = useState('');
@@ -18,12 +18,11 @@ const Main = () => {
         setNum(e.target.value);
     }    
     const onClick = async() => {
-        list.push({"medicine_id": id,"medicine_name": name, "num":num});
-        await axios.post("https://da12cbf1-ea38-4684-8c59-5cec89c3f728.mock.pstmn.io/input",list).then(
+        data.push({"medicine_id": Number(id),"medicine_name": name, "num":Number(num)});
+        console.log(typeof(data));
+        await axios.post("http://localhost:5000/api/sendintake",data).then(
             async response=>{
-                console.log(list);
-                const answer = await axios.get("https://64015d57-ae66-4061-9d92-c81956d3738e.mock.pstmn.io/test");
-                setIntake(answer.data.data.intake);        
+                setIntake(response.data.data.intake);        
             })
     }
     return(
