@@ -2,19 +2,23 @@
   display: flex;
   position: absolute;
   top: 5%;
-  left: 37%;
+  left: 36%;
 }
 .body {
 }
-.input {
+.form {
   display: flex;
   position: absolute;
-  top: 40%;
+  top: 35%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
+.input {
+  top: 50%;
+  background-color: aquamarine;
+}
 .output {
-  top: 60%;
+  top: 70%;
   background-color: aquamarine;
   width: 50%;
   height: 50%;

@@ -7,7 +7,7 @@ const Main = () => {
     const [name,setName] = useState('');
     const [num,setNum] = useState(0);
     const [intake,setIntake] = useState([]);
-    
+
     const onChangeName = (e) => {
         setName(e.target.value);
     }
@@ -50,4 +50,3 @@ const Main = () => {
 }
 
 export default Main;
-    // id, num e.target.value으로 바꾸기
