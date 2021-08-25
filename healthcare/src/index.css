@@ -18,6 +18,12 @@
   top: 40%;
   background-color: aquamarine;
 }
+.sendBtn {
+  position: absolute;
+  top: 35%;
+  right: 20%;
+  background-color: yellowgreen;
+}
 .output {
   top: 70%;
   background-color: aquamarine;

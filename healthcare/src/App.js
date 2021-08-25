@@ -3,10 +3,13 @@ import './index.css';
 // import Main from './Main.js';
 import InputMedicine from './component/InputMedicine';
 import InputMedicineList from './component/InputMedicineList';
+import axios from 'axios';
 
 function App() {
   const [medicines,setMedicines] = useState([]); 
   const nextId = useRef(1);
+  const [output,setOutput] = useState([]);
+
   const onInsert = useCallback(
     data => {
       const medicine = {
@@ -18,6 +21,13 @@ function App() {
   nextId.current += 1;
 },[medicines]);
 
+const onClick = async() => {
+  console.log(medicines);
+  await axios.post("http://localhost:5000/api/sendintake",medicines).then(
+      async response=>{
+        setOutput(response.data.data.intake);       
+      })
+}
   return (
     <div>
       <div className="header">
@@ -27,9 +37,16 @@ function App() {
         <div className="form">
           <InputMedicine onInsert={onInsert}/>
         </div>
-        <button>총 성분 섭취량 구하기</button>
+        <button className="sendBtn" onClick={onClick}>총 성분 섭취량 구하기</button>
         <div className="input">
           <InputMedicineList medicines={medicines} className="output"/>
+        </div>
+        <div className="output">
+        {output.map(intake_element => (
+                <div key={intake_element.word_id}>
+                    <li>{intake_element.word_id}번 {intake_element.volume}{intake_element.unit}</li>
+                </div>
+            ))}
         </div> 
       </div>
     </div>
