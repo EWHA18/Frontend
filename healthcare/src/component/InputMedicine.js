@@ -3,7 +3,6 @@ import React, {useState, useCallback} from 'react';
 const InputMedicine = ({onInsert}) => {
     const [name,setName] = useState('');
     const [intake,setIntake] = useState('');
-    const [data,setData] = useState([]);
 
     const onChangeName = useCallback(e=>{
         setName(e.target.value);
@@ -12,26 +11,26 @@ const InputMedicine = ({onInsert}) => {
         setIntake(e.target.value);
     },[]);
 
-    const onSubmit = useCallback( e => {
-        //setData([name,intake]);
+    let MediForm = new FormData();
+    const onSubmit = useCallback(e=>{
+        MediForm.append('name',name); 
+        MediForm.append('intake',intake); 
+
         console.log(name);
         console.log(intake);
 
-        onInsert(name);
-
+        onInsert(MediForm);
         setName('');
         setIntake('');
-        setData([]);
         e.preventDefault();
-    },[onInsert,name]);
+    },[onInsert,MediForm]);
 
     return(
         <form onSubmit={onSubmit}>
             <input placeholder="약품명" value={name} onChange={onChangeName}/>
-            <input placeholder="섭취량" value={intake} onChange={onChangeIntake}/>
+            <input type="number" placeholder="섭취량" value={intake} onChange={onChangeIntake}/>
             <button type="submit">+</button>
         </form>
-    );
-}
+    );}
 
 export default InputMedicine;

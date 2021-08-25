@@ -1,7 +1,7 @@
 .header {
   display: flex;
   position: absolute;
-  top: 5%;
+  top: 4%;
   left: 36%;
 }
 .body {
@@ -9,12 +9,13 @@
 .form {
   display: flex;
   position: absolute;
-  top: 35%;
+  top: 30%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
 .input {
-  top: 50%;
+  position: absolute;
+  top: 40%;
   background-color: aquamarine;
 }
 .output {
