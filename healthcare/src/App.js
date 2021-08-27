@@ -47,7 +47,7 @@ const onClick = async() => {
         <div className="output">
           <h3>Output</h3>
         {output.map(intake_element => (
-                <div key={intake_element.word_id}>
+                <div key={intake_element.word_id} className="medicine-">
                     <li>{intake_element.word_id}번 {intake_element.volume}{intake_element.unit}</li>
                 </div>
             ))}
