@@ -37,6 +37,13 @@
   right: 20%;
   background-color: yellowgreen;
 }
+.heavyBtn {
+  position: absolute;
+  top: 35%;
+  right: 10%;
+  background-color: darkgreen;
+  color: white;
+}
 .output {
   position: absolute;
   top: 40%;
