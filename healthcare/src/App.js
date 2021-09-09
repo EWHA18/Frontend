@@ -38,12 +38,16 @@ const onClick = async() => {
           <InputMedicine onInsert={onInsert}/>
         </div>
         <button className="sendBtn" onClick={onClick}>총 성분 섭취량 구하기</button>
+        
         <div className="input">
-          <InputMedicineList medicines={medicines} className="output"/>
+          <h3>Input</h3>
+          <InputMedicineList medicines={medicines}/>
         </div>
+        
         <div className="output">
+          <h3>Output</h3>
         {output.map(intake_element => (
-                <div key={intake_element.word_id}>
+                <div key={intake_element.word_id} className="medicine-">
                     <li>{intake_element.word_id}번 {intake_element.volume}{intake_element.unit}</li>
                 </div>
             ))}
