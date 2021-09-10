@@ -69,8 +69,8 @@ def calculate(medicine_name, num, intake):
 def func():
   req=request.json
   intake=[]
-  for medicine in req['data']:
-        calculate(medicine['medicine_name'], medicine['num'], intake)
+  for medicine in req:
+        calculate(medicine['name'], medicine['intake'], intake)
   data={}
   data["intake"]=intake
   print(data)

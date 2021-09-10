@@ -25,21 +25,15 @@ const FileUpload = () => {
 		</div>
 		);
 	} 
-    else {
-		return (
-		<div>
-			<h4>Choose before Pressing the Upload button</h4>
-		</div>
-		);
-	}};
+};
 		
 	return (
 		<div>
-			<h3>File Upload using React!</h3>
+			<h3>사용자의 약품 내역을 파일로 업로드해보세요!</h3><br/>
 			<div>
 				<input type="file" onChange={onFileChange} />
 				<button onClick={onFileUpload}>
-				Upload!
+				파일 업로드
 				</button>
 			</div>
 		{fileData()}
