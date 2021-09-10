@@ -1,8 +1,14 @@
+@import url(https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css);
+* {
+  font-family: "NanumSquare", sans-serif;
+  margin: 0px;
+}
+
 .header {
   display: flex;
   position: absolute;
-  top: 4%;
-  left: 36%;
+  top: 10%;
+  left: 38%;
 }
 .body {
 }
@@ -13,10 +19,17 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
+.medicine- {
+  margin: 2% 0% 2% 0%;
+}
 .input {
   position: absolute;
   top: 40%;
-  background-color: aquamarine;
+  left: 15%;
+  width: 30%;
+  height: 10%;
+  /* border: solid; */
+  padding: 1%;
 }
 .sendBtn {
   position: absolute;
@@ -24,9 +37,25 @@
   right: 20%;
   background-color: yellowgreen;
 }
+.heavyBtn {
+  position: absolute;
+  top: 35%;
+  right: 10%;
+  background-color: darkgreen;
+  color: white;
+}
 .output {
-  top: 70%;
-  background-color: aquamarine;
-  width: 50%;
-  height: 50%;
+  position: absolute;
+  top: 40%;
+  width: 30%;
+  height: 10%;
+  /* border: solid; */
+  right: 15%;
+  padding: 1%;
+}
+.sendBtn {
+  position: absolute;
+  top: 35%;
+  right: 20%;
+  background-color: yellowgreen;
 }
