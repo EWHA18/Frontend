@@ -14,55 +14,66 @@ cors = CORS(app, resources = {
     r"/api/*": {"origin": "*"}
   })
 
-def calculate(medicine_id, medicine_name, num, intake):
+@app.errorhandler(HTTPException)
+def error_handler(e):
+    response = e.get_response()
+
+    response.data = json.dumps({
+        'status': e.code,
+        'success': False,
+        'message': e.description,
+    })
+    response.content_type = 'application/json'
+
+    return response
+
+
+def calculate(medicine_name, num, intake):
   product = database.execute(text("""
-    SELECT
+   SELECT
       ingredient
-      FROM Medicine
-      WHERE idx = :medicine_id
-  """), {'medicine_id': medicine_id}).fetchone()
-
-      #이름으로 search
-  # product = database.execute(text("""
-  #   SELECT
-  #     ingredient
-  #     FROM Medicine
-  #     WHERE product = :medicine_name
-  # """), {'medicine_name': medicine_name}).fetchone()
-
-  product = product[0]
-
-  ingredients = product.split(":")
-  ingredients = ingredients[0:-1]
+    FROM Medicine
+      WHERE product = :medicine_name
+  """), {'medicine_name': medicine_name}).fetchone()
+  ingredients = product[0].split(":")
+  ingredients.pop()
   for ingredient in ingredients:
     field = ingredient.split("_")
     word_id = field[0]
-    volume = float(field[1])
-    unit = field[2]
+    classification = field[1]
+    word_name = field[2]
+    unit = field[3]   
+    volume = float(field[4])
+    isHeavyMetal = False
+    if(classification=="중금속"): 
+      isHeavyMetal = True
     prev=False
-
+    
     for i in range(0,len(intake)):
       if intake[i]['word_id'] == word_id:
-        intake[i]['volume'] += volume*num
+        intake[i]['volume'] += volume*float(num)
         prev=True
 
     if(prev==False):
       data={
-        "word_id":word_id,
-        "volume":volume*num,
-        "unit":unit
+        "word_id": word_id,
+        "word_name":word_name,
+        "volume":volume*float(num),
+        "unit":unit,
+        "isHeavyMetal": isHeavyMetal
       }
       intake.append(data)
-  print(intake)
+  
 
 @app.route("/api/sendintake", methods=['POST'])
 def func():
   req=request.json
   intake=[]
   for medicine in req['data']:
-    calculate(medicine['medicine_id'], medicine['medicine_name'], medicine['num'], intake)
+        calculate(medicine['medicine_name'], medicine['num'], intake)
   data={}
   data["intake"]=intake
+  print(data)
   return jsonify({
             "status": 200,
             "success": True,
