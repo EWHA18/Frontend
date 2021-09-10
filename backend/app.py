@@ -80,5 +80,17 @@ def func():
             "data": data
         })
 
+@app.route("/api/sendfile", methods=['POST'])
+def file():
+  if request.method == 'POST':
+    csv_file = request.files['file']
+		# # 파일 안정성 확인
+		# global filename
+		# filename = secure_filename(csv_file.filename)
+		# /csv 폴더에 저장
+    # csv_file.save(os.path.join('./csv', filename))
+    return jsonify({'success': True, 'file': 'Received'})
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port="5000")

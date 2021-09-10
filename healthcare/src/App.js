@@ -4,6 +4,7 @@ import './index.css';
 import InputMedicine from './component/InputMedicine';
 import InputMedicineList from './component/InputMedicineList';
 import axios from 'axios';
+import FileUpload from './component/FileUpload';
 
 function App() {
   const [medicines,setMedicines] = useState([]); 
@@ -30,6 +31,7 @@ const onClick = async() => {
 }
   return (
     <div>
+      <FileUpload/>
       <div className="header">
         <h1>건강기능식품 프로젝트</h1>
       </div>
