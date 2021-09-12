@@ -3,7 +3,6 @@
   font-family: "NanumSquare", sans-serif;
   margin: 0px;
 }
-
 .header {
   display: flex;
   position: absolute;
@@ -11,51 +10,48 @@
   left: 38%;
 }
 .body {
+  position: absolute;
+  width: 100%;
+  top: 30%;
 }
 .form {
-  display: flex;
   position: absolute;
-  top: 30%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-.medicine- {
-  margin: 2% 0% 2% 0%;
-}
-.input {
-  position: absolute;
-  top: 40%;
-  left: 15%;
-  width: 30%;
-  height: 10%;
-  /* border: solid; */
-  padding: 1%;
+  left: 35%;
 }
 .sendBtn {
   position: absolute;
-  top: 35%;
-  right: 20%;
+  right: -20%;
   background-color: yellowgreen;
 }
 .heavyBtn {
   position: absolute;
-  top: 35%;
-  right: 10%;
+  right: -50%;
   background-color: darkgreen;
   color: white;
 }
-.output {
+
+.result {
   position: absolute;
-  top: 40%;
+  top: 65%;
+  width: 100%;
+}
+
+.input {
+  position: absolute;
+  top: 0%;
+  left: 15%;
   width: 30%;
   height: 10%;
-  /* border: solid; */
-  right: 15%;
   padding: 1%;
 }
-.sendBtn {
+.medicine- {
+  margin: 2% 0% 2% 0%;
+}
+.output {
   position: absolute;
-  top: 35%;
-  right: 20%;
-  background-color: yellowgreen;
+  top: 0%;
+  width: 30%;
+  height: 10%;
+  right: 15%;
+  padding: 1%;
 }

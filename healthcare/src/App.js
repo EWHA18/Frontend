@@ -50,16 +50,19 @@ const heavy_button = () => {
 }
   return (
     <div>
-      <FileUpload/>
       <div className="header">
         <h1>건강기능식품 프로젝트</h1>
       </div>
       <div className="body">
         <div className="form">
+          <FileUpload/><br/>
           <InputMedicine onInsert={onInsert}/>
+          <br/>
+          <button className="sendBtn" onClick={onClick}>총 성분 섭취량 구하기</button>
+          <button className="heavyBtn" onClick={heavy_button}>{show_state}</button>
         </div>
-        <button className="sendBtn" onClick={onClick}>총 성분 섭취량 구하기</button>
-        <button className="heavyBtn" onClick={heavy_button}>{show_state}</button>
+      </div>
+      <div className="result">
         <div className="input">
           <h3>Input</h3>
           <InputMedicineList medicines={medicines}/>
@@ -72,7 +75,7 @@ const heavy_button = () => {
                 </div>
             ))}
         </div> 
-      </div>
+        </div>
     </div>
   );
 }
