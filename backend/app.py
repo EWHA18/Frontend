@@ -86,7 +86,7 @@ def func():
 
 # 파일 읽고 처리하기
 def csv_process(filename):
-  file = pd.read_csv("./csv/"+filename, engine='python')
+  file = pd.read_csv("./csv/"+filename, engine='python', encoding='cp949')
   data = []
     
   for i in range(0, len(file)):
@@ -107,8 +107,7 @@ def csv_process(filename):
             calculate(medicine_name, num, dt['intake'])
             data.append(dt)
             # person name, intake를 가지고 있는 dict 를 data 에 삽입
-      
-      
+
   return data
           
         

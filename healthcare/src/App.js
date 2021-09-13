@@ -14,6 +14,7 @@ function App() {
   const [test,setTest] = useState([]);
   const [checked,setCheck] = useState([]);
   const [show_state,setShow] = useState([]);
+
   const onInsert = useCallback(
     data => {
       const medicine = {
