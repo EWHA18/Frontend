@@ -27,7 +27,7 @@ const InputMedicine = ({onInsert}) => {
 
     return(
         <form onSubmit={onSubmit}>
-            <input placeholder="약품명" value={name} onChange={onChangeName}/>
+            <input type="text" placeholder="약품명" value={name} onChange={onChangeName}/>
             <input type="number" placeholder="섭취량" value={intake} onChange={onChangeIntake}/>
             <button type="submit">+</button>
         </form>

@@ -20,28 +20,23 @@
 }
 .sendBtn {
   position: absolute;
+  margin: 5%;
   right: -20%;
   background-color: yellowgreen;
 }
 .heavyBtn {
   position: absolute;
+  margin: 5%;
   right: -50%;
   background-color: darkgreen;
   color: white;
 }
-
-.result {
-  position: absolute;
-  top: 65%;
-  width: 100%;
-}
-
 .input {
   position: absolute;
-  top: 0%;
+  top: 30%;
   left: 15%;
   width: 30%;
-  height: 10%;
+  margin-top: 5%;
   padding: 1%;
 }
 .medicine- {
@@ -49,9 +44,9 @@
 }
 .output {
   position: absolute;
-  top: 0%;
+  top: 30%;
   width: 30%;
-  height: 10%;
   right: 15%;
+  margin-top: 5%;
   padding: 1%;
 }

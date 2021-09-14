@@ -56,12 +56,11 @@ const heavy_button = () => {
       <div className="body">
         <div className="form">
           <InputMedicine onInsert={onInsert}/>
-        </div>
         <button className="sendBtn" onClick={onClick}>총 성분 섭취량 구하기</button>
         <button className="heavyBtn" onClick={heavy_button}>{show_state}</button>
+        </div>
         <div className="input">
-          <h3>Input</h3>
-          <InputMedicineList medicines={medicines}/>
+          <h3>Input</h3><InputMedicineList medicines={medicines}/>
         </div>
         <div className="output">
           <h3>Output</h3>
@@ -70,7 +69,7 @@ const heavy_button = () => {
                     <li>{intake_element.word_name} {intake_element.volume}{intake_element.unit}</li>
                 </div>
             ))}
-        </div> 
+        </div>
       </div>
     </div>
   );
