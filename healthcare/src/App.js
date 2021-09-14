@@ -27,6 +27,7 @@ function App() {
 },[medicines]);
 
 const onClick = async() => {
+  console.log(medicines);
   await axios.post("http://localhost:5000/api/sendintake",medicines).then(
       async response=>{
         console.log(response.data.data.intake);
