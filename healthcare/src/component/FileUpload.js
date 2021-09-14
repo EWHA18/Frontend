@@ -53,6 +53,7 @@ const FileUpload = () => {
 		}
 	};
 	const heavy_button = () => {
+		console.log(checked);
 		if(!checked){
 		  setTotal(heavy);
 		  setCheck(true);
@@ -68,26 +69,28 @@ const FileUpload = () => {
 			<div className="header">
 				<h1>건강기능식품 프로젝트</h1>
 			</div>
-			<div className="input">
+			<div className="body">
+				<div className="form">
 				<h3>사용자의 약품 내역을 파일로 업로드해보세요!</h3><br />
-				<div>
-					<input type="file" onChange={onFileChange} />
-					<button onClick={onFileUpload}>
-						파일 업로드
-					</button>
+				<input type="file" onChange={onFileChange}/>
+				<button onClick={onFileUpload}>파일 업로드</button>
+				<button className="heavyBtn" onClick={heavy_button}>{show_state}</button>
 				</div>
+
+				<div className="input">
+				<h3>Input</h3>
 				{fileData()}
-			</div>
-			<div className="output">
-			{index.map(i => (
+				</div>
+				<div className="output">
+				<h3>Output</h3>
+					{index.map(i => (
 					<div>
-						{name[i]}
-						{total[i].map(t => <li>{t.word_name} {t.volume}{t.unit}</li>)}
-						<br/>
+						<p>이름: {name[i]}</p>
+						{total[i].map(t => <li>{t.word_name} {t.volume}{t.unit}</li>)}<br/>
 					</div>
 				))}
+				</div>
 			</div>
-			<button className="heavyBtn" onClick={heavy_button}>{show_state}</button>
 		</div>
 	);
 }
