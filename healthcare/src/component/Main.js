@@ -66,7 +66,7 @@ const heavy_button = () => {
           <h3>Output</h3>
           {test.map(intake_element => (
                 <div key={intake_element.word_id} className="medicine-">
-                    <li>{intake_element.word_name} {intake_element.volume}{intake_element.unit}</li>
+                    <li>{intake_element.word_name} {intake_element.volume} {intake_element.unit}</li>
                 </div>
             ))}
         </div>

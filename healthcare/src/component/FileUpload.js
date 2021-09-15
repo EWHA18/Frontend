@@ -86,7 +86,7 @@ const FileUpload = () => {
 					{index.map(i => (
 					<div>
 						<p>이름: {name[i]}</p>
-						{total[i].map(t => <li>{t.word_name} {t.volume}{t.unit}</li>)}<br/>
+						{total[i].map(t => <li>{t.word_name} {t.volume} {t.unit}</li>)}<br/>
 					</div>
 				))}
 				</div>
