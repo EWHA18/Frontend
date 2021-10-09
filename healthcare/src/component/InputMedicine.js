@@ -1,9 +1,13 @@
 import React, {useState, useCallback} from 'react';
 
 const InputMedicine = ({onInsert}) => {
+    const [weight,setWeight] = useState('');
     const [name,setName] = useState('');
     const [intake,setIntake] = useState('');
 
+    const onChangeWeight = useCallback(e=>{
+        setWeight(e.target.value);
+    },[]);
     const onChangeName = useCallback(e=>{
         setName(e.target.value);
     },[]);
@@ -13,13 +17,16 @@ const InputMedicine = ({onInsert}) => {
 
     let MediForm = new FormData();
     const onSubmit = useCallback(e=>{
+        MediForm.append('weight',weight);
         MediForm.append('name',name); 
         MediForm.append('intake',intake); 
 
+        console.log(weight);
         console.log(name);
         console.log(intake);
 
         onInsert(MediForm);
+        setWeight('');
         setName('');
         setIntake('');
         e.preventDefault();
@@ -27,6 +34,7 @@ const InputMedicine = ({onInsert}) => {
 
     return(
         <form onSubmit={onSubmit}>
+            <input type="number" placeholder="몸무게(kg)" value={weight} onChange={onChangeWeight}/>
             <input type="text" placeholder="약품명" value={name} onChange={onChangeName}/>
             <input type="number" placeholder="섭취량" value={intake} onChange={onChangeIntake}/>
             <button type="submit">+</button>

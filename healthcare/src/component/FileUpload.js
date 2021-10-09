@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useState, useRef, useCallback } from 'react';
+import {Link, Route} from 'react-router-dom';
 import '../index.css';
 
 const FileUpload = () => {
@@ -86,10 +87,11 @@ const FileUpload = () => {
 					{index.map(i => (
 					<div>
 						<p>이름: {name[i]}</p>
-						{total[i].map(t => <li>{t.word_name} {t.volume} {t.unit}</li>)}<br/>
+						{total[i].map(t => <li>{t.word_name} {t.volume} {t.unit} (초과 100+{t.percentage}%)</li>)}<br/>
 					</div>
 				))}
 				</div>
+				<Link to = '/'><span>사용자 직접 입력</span></Link>
 			</div>
 		</div>
 	);

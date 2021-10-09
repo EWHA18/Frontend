@@ -13,10 +13,12 @@ const Main = ()=>{
   const [test,setTest] = useState([]);
   const [checked,setCheck] = useState([]);
   const [show_state,setShow] = useState([]);
+
   const onInsert = useCallback(
     data => {
       const medicine = {
         id:nextId.current,
+        weight: data.get('weight'),
         name: data.get('name'),
         intake: data.get('intake')
   };
@@ -66,10 +68,11 @@ const heavy_button = () => {
           <h3>Output</h3>
           {test.map(intake_element => (
                 <div key={intake_element.word_id} className="medicine-">
-                    <li>{intake_element.word_name} {intake_element.volume} {intake_element.unit}</li>
+                    <li>{intake_element.word_name} {intake_element.volume} {intake_element.unit} (초과 100+{intake_element.percentage}%)</li>
                 </div>
             ))}
-        </div>
+        </div>  
+        <Link to = '/file'><span>CSV 파일 입력</span></Link>
       </div>
     </div>
   );
