@@ -68,7 +68,8 @@ const heavy_button = () => {
           <h3>Output</h3>
           {test.map(intake_element => (
                 <div key={intake_element.word_id} className="medicine-">
-                    <li>{intake_element.word_name} {intake_element.volume} {intake_element.unit} (초과 100+{intake_element.percentage}%)</li>
+                    <li>{intake_element.word_name} {intake_element.volume} {intake_element.unit} 
+                    {intake_element.percentage==0 ? <p/> : ' ('+(100+Math.round(intake_element.percentage*100)/100)+'%)'}</li>
                 </div>
             ))}
         </div>  

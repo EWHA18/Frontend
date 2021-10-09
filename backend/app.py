@@ -9,8 +9,15 @@ import pandas as pd
 
 
 app = Flask(__name__)
-database = create_engine("mysql+mysqlconnector://'root':1234@localhost:3306/healthcare?charset=utf8", encoding = 'utf-8', max_overflow = 0)
+database = create_engine("mysql+mysqlconnector://'root':1234@localhost:3306/healthcare?charset=utf8", encoding = 'cp949', max_overflow = 0)
 app.database = database
+
+limit = {
+  "납": 0.264,
+  "카드뮴": 0.833,
+  "총 비소": 1.285,
+  "총 수은": 0.528
+}
 
 cors = CORS(app, resources = {
     r"/v1/*": {"origin": "*"},
@@ -63,17 +70,33 @@ def calculate(medicine_name, num, intake):
         "word_name":word_name,
         "volume":volume*float(num),
         "unit":unit,
-        "isHeavyMetal": isHeavyMetal
+        "isHeavyMetal": isHeavyMetal,
+        "percentage": 0
       }
       intake.append(data)
+      
+  for i in range(0, len(intake)):
+    intake[i]['volume'] = round(intake[i]['volume'], 4)
+        
   
 
 @app.route("/api/sendintake", methods=['POST'])
 def func():
   req=request.json
+  print(req)
   intake=[]
+  weight = int(0)
   for medicine in req:
+        print(medicine)
         calculate(medicine['name'], medicine['intake'], intake)
+        weight = medicine['weight']
+  for ingredient in intake:
+      if ingredient['word_name'] in limit:
+           ingredient['percentage'] = ingredient['volume']/(limit[ingredient['word_name']]*float(weight))*100 
+           #0.264/1000 *A 
+           #10/(0.000264*A) *100%
+           #volume/(limit['성분']*몸무게)*100
+
   data={}
   data["intake"]=intake
   print(data)
@@ -88,9 +111,11 @@ def func():
 def csv_process(filename):
   file = pd.read_csv("./csv/"+filename, engine='python', encoding='cp949')
   data = []
+  weights = {}
     
   for i in range(0, len(file)):
       name = str(file.loc[i]['이름'])
+      weight = file.loc[i]['몸무게']
       medicine_name = str(file.loc[i]['약품명'])
       num = file.loc[i]['섭취량']
       flag = False
@@ -105,8 +130,16 @@ def csv_process(filename):
             dt['name'] = name
             dt['intake'] = [] 
             calculate(medicine_name, num, dt['intake'])
+            weights[name] = weight
             data.append(dt)
             # person name, intake를 가지고 있는 dict 를 data 에 삽입
+            
+  for person in data:
+        for ingredient in person['intake']:
+              if ingredient['word_name'] in limit:
+                ingredient['percentage'] = ingredient['volume']/(limit[ingredient['word_name']]*weights[person['name']])*100 
+
+
 
   return data
           
