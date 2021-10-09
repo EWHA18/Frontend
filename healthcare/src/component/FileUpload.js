@@ -91,7 +91,7 @@ const FileUpload = () => {
 					</div>
 				))}
 				</div>
-				<Link to = '/'><span>사용자 직접 입력</span></Link>
+				<Link to = '/'><span>(단일)사용자 직접 입력</span></Link>
 			</div>
 		</div>
 	);

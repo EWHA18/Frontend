@@ -72,7 +72,7 @@ const heavy_button = () => {
                 </div>
             ))}
         </div>  
-        <Link to = '/file'><span>CSV 파일 입력</span></Link>
+        <Link to = '/file'><span>(다수)사용자 CSV 파일 입력</span></Link>
       </div>
     </div>
   );
