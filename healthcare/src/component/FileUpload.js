@@ -31,10 +31,10 @@ const FileUpload = () => {
 					temp_index.push(i);
 					temp_heavy.push(response.data.data[i].intake.filter(f=>f.isHeavyMetal==true));
 				} setName(temp_name);
+				setHeavy(temp_heavy);
 				setData(temp_data);
 				setTotal(temp_data);
 				setIndex(temp_index);
-				setHeavy(temp_heavy);
 				setCheck(false);
 				setShow("중금속만 보기");
 			});
@@ -88,7 +88,7 @@ const FileUpload = () => {
 					<div>
 						<p>이름: {name[i]}</p>
 						{total[i].map(t => <li>{t.word_name} {t.volume} {t.unit} 
-						{t.percentage==0 ? <p/> : ' ('+(100+Math.round(t.percentage*100)/100)+'%)'}  </li>)} <br/>
+						{t.percentage==0 ? <p/> : ' ('+(100+Math.round(t.percentage*1000)/1000).toFixed(3)+'%)'}  </li>)} <br/>
 					</div>
 				))}
 				</div>
