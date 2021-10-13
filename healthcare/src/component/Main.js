@@ -54,6 +54,7 @@ const heavy_button = () => {
     <div>
       <div className="header">
         <h1>건강기능식품 프로젝트</h1>
+        <Link to = '/file'><span className="usermode">(단일)사용자 직접 입력</span></Link>
       </div>
       <div className="body">
         <div className="form">
@@ -73,7 +74,6 @@ const heavy_button = () => {
                 </div>
             ))}
         </div>  
-        <Link to = '/file'><span>(다수)사용자 CSV 파일 입력</span></Link>
       </div>
     </div>
   );
