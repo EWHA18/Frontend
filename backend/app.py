@@ -1,4 +1,4 @@
-from flask      import Flask, request, jsonify, current_app, g, flash, json
+from flask      import Flask, request, jsonify, current_app, g, flash, json, send_file
 from flask_cors import CORS
 from sqlalchemy import create_engine, text
 from werkzeug.exceptions import HTTPException, NotFound
@@ -6,6 +6,7 @@ import datetime as dt
 import os
 from werkzeug.utils import secure_filename
 import pandas as pd
+import csv
 
 
 app = Flask(__name__)
@@ -47,6 +48,7 @@ def calculate(medicine_name, num, intake):
   """), {'medicine_name': medicine_name}).fetchone()
   ingredients = product[0].split(":")
   ingredients.pop()
+  
   for ingredient in ingredients:
     field = ingredient.split("_")
     word_id = field[0]
@@ -92,7 +94,7 @@ def func():
         weight = medicine['weight']
   for ingredient in intake:
       if ingredient['word_name'] in limit:
-           ingredient['percentage'] = ingredient['volume']/(limit[ingredient['word_name']]*float(weight))*100 
+           ingredient['percentage'] = ingredient['volume']/(limit[ingredient['word_name']]*float(weight))*100
            #0.264/1000 *A 
            #10/(0.000264*A) *100%
            #volume/(limit['성분']*몸무게)*100
@@ -169,6 +171,55 @@ def file():
           "success": True,
           "data": data
     })
+    
+@app.route("/api/exportFile", methods=['POST'])
+def exportFile():      
+      ingredients = []
+      ingredients.append("이름")
+      ingredientsName = []
+      
+      ingredientInfo = database.execute(text("""
+        SELECT
+          name
+        FROM Word
+      """), ).fetchall()
+
+      for ingredient in ingredientInfo:
+            ingredients.append(ingredient[0])
+            ingredientsName.append(ingredient[0].split("_")[2])
+            
+      req=request.json
+      filename = secure_filename(str(dt.datetime.now()).replace(" ", "").replace("-","_").replace(":", "_").replace(".", "_") + ".csv")
+      
+      exportFile = open(f".\\{filename}", mode="w", newline='', encoding='UTF-8')
+      writer = csv.writer(exportFile)
+      writer.writerow(ingredients)
+      
+      for userInfo in req:
+          rowInfo = []
+          rowInfo.append(userInfo['name'])
+          for ingredientName in ingredientsName:
+              isAppended = False
+              for ingredients in userInfo['intake']:
+                    if ingredientName == ingredients['word_name']:
+                          rowInfo.append(ingredients['volume'])
+                          isAppended = True
+                          break;
+              if isAppended == False:
+                    rowInfo.append(0)
+          writer.writerow(rowInfo)
+      
+      exportFile.flush()
+      exportFile.close()
+      
+      return send_file(
+        filename,
+        mimetype='text/csv',
+        as_attachment=True,
+        attachment_filename="medicineIntake.csv"
+      )
+    
+      
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port="5000")

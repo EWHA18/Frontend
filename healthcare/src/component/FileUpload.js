@@ -59,7 +59,6 @@ const FileUpload = () => {
 		}
 	};
 	const heavy_button = () => {
-		console.log(checked);
 		if(!checked){
 		  setTotal(heavy);
 		  setCheck(true);
@@ -72,10 +71,20 @@ const FileUpload = () => {
 	  }
 	
 	const onSaveResult = () => {
-		axios.post("http://localhost:5000/api/exportFile", data).then(response=>{
-			console.log("데이터 파일, 이걸 클릭하면 자동 다운되어야함");
-			<a href="/api/exportFile" download>Download File</a>
-		})
+		axios({
+			url: 'http://localhost:5000/api/exportFile', //your url
+			method: 'POST',
+			data: data,
+			responseType: 'blob', // important
+		  })
+	.then((response) => {
+		const url = window.URL.createObjectURL(new Blob([response.data]));
+		const link = document.createElement('a');
+		link.href = url;
+		link.setAttribute('download', 'result.csv'); //or any other extension
+		document.body.appendChild(link);
+		link.click();
+	 });
 	} 
 	return (
 		<div>
@@ -101,7 +110,7 @@ const FileUpload = () => {
 					{index.map(i => (
 					<div>
 						<p>이름: {name[i]}</p>
-						{total[i].map(t => <li>{t.word_name} {t.volume} {t.unit} 
+						{total[i].map(t => <li key={t.word_name}>{t.word_name} {t.volume} {t.unit} 
 						{t.percentage==0 ? <p/> : ' ('+(100+Math.round(t.percentage*1000)/1000).toFixed(3)+'%)'}  </li>)} <br/>
 					</div>
 				))}
