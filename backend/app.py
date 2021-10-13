@@ -194,7 +194,7 @@ def exportFile():
       writer = csv.writer(exportFile)
       writer.writerow(ingredients)
       
-      for userInfo in req['data']:
+      for userInfo in req:
           rowInfo = []
           rowInfo.append(userInfo['name'])
           for ingredientName in ingredientsName:
