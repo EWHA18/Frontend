@@ -78,7 +78,7 @@ def calculate(medicine_name, num, intake):
       intake.append(data)
       
   for i in range(0, len(intake)):
-    intake[i]['volume'] = round(intake[i]['volume'], 4)
+    intake[i]['volume'] = intake[i]['volume']
         
   
 
@@ -88,8 +88,7 @@ def func():
   print(req)
   intake=[]
   weight = int(0)
-  for medicine in req:
-        print(medicine)
+  for medicine in req['data']:
         calculate(medicine['name'], medicine['intake'], intake)
         weight = medicine['weight']
   for ingredient in intake:
@@ -195,7 +194,7 @@ def exportFile():
       writer = csv.writer(exportFile)
       writer.writerow(ingredients)
       
-      for userInfo in req:
+      for userInfo in req['data']:
           rowInfo = []
           rowInfo.append(userInfo['name'])
           for ingredientName in ingredientsName:
@@ -218,7 +217,8 @@ def exportFile():
         as_attachment=True,
         attachment_filename="medicineIntake.csv"
       )
-    
+      
+      
       
 
 if __name__ == "__main__":
