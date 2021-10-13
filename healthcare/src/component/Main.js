@@ -28,8 +28,8 @@ const Main = ()=>{
 },[medicines]);
 
 const onClick = async() => {
-  console.log(medicines);
-  await axios.post("http://localhost:5000/api/sendintake",medicines).then(
+  const final = {data:medicines}
+  await axios.post("http://localhost:5000/api/sendintake",final).then(
       async response=>{
         console.log(response.data.data.intake);
         setHeavy(response.data.data.intake.filter(intake_element => intake_element.isHeavyMetal==true));       
