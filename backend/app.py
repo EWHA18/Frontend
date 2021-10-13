@@ -14,10 +14,10 @@ database = create_engine("mysql+mysqlconnector://'root':1234@localhost:3306/heal
 app.database = database
 
 limit = {
-  "납": 0.264,
-  "카드뮴": 0.833,
-  "총 비소": 1.285,
-  "총 수은": 0.528
+  "납": 0.000264,
+  "카드뮴": 0.000833,
+  "총 비소": 0.001285,
+  "총 수은": 0.000528
 }
 
 cors = CORS(app, resources = {
@@ -92,13 +92,13 @@ def func():
   req=request.json
   print(req)
   intake=[]
-  weight = int(0)
-  for medicine in req:
+  weight = float(0)
+  for medicine in req['data']:
         calculate(medicine['name'], medicine['intake'], intake)
         weight = medicine['weight']
   for ingredient in intake:
       if ingredient['word_name'] in limit:
-           ingredient['percentage'] = ingredient['volume']/(limit[ingredient['word_name']]*float(weight))*100
+           ingredient['percentage'] = ingredient['volume']/(limit[ingredient['word_name']]*float(weight))
            #0.264/1000 *A 
            #10/(0.000264*A) *100%
            #volume/(limit['성분']*몸무게)*100
