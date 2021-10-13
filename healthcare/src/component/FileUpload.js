@@ -71,10 +71,11 @@ const FileUpload = () => {
 	  }
 	
 	const onSaveResult = () => {
+		const final = {data:data}
 		axios({
 			url: 'http://localhost:5000/api/exportFile', //your url
 			method: 'POST',
-			data: data,
+			data: final,
 			responseType: 'blob', // important
 		  })
 	.then((response) => {
@@ -111,7 +112,7 @@ const FileUpload = () => {
 					<div>
 						<p>이름: {name[i]}</p>
 						{total[i].map(t => <li key={t.word_name}>{t.word_name} {t.volume} {t.unit} 
-						{t.percentage==0 ? <p/> : ' ('+(100+Math.round(t.percentage*1000)/1000).toFixed(3)+'%)'}  </li>)} <br/>
+						{t.percentage==0 ? <p/> : ' ('+(Math.round(t.percentage*1000)/1000).toFixed(3)+'%)'}  </li>)} <br/>
 					</div>
 				))}
 				</div>

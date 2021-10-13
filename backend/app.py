@@ -46,6 +46,9 @@ def calculate(medicine_name, num, intake):
     FROM Medicine
       WHERE product = :medicine_name
   """), {'medicine_name': medicine_name}).fetchone()
+  if product is None:
+        return medicine_name;
+        
   ingredients = product[0].split(":")
   ingredients.pop()
   
@@ -79,6 +82,8 @@ def calculate(medicine_name, num, intake):
       
   for i in range(0, len(intake)):
     intake[i]['volume'] = intake[i]['volume']
+    
+  return None;
         
   
 
@@ -88,7 +93,7 @@ def func():
   print(req)
   intake=[]
   weight = int(0)
-  for medicine in req['data']:
+  for medicine in req:
         calculate(medicine['name'], medicine['intake'], intake)
         weight = medicine['weight']
   for ingredient in intake:
@@ -108,21 +113,33 @@ def func():
         })
 
 
+def add_debug(personalID, product_name):
+    debugFile = open(".\\debugFile.csv", mode="a", newline='', encoding='UTF-8')
+    writer = csv.writer(debugFile)
+    rowInfo = []
+    rowInfo.append(personalID)
+    rowInfo.append(product_name)
+    writer.writerow(rowInfo)      
+    debugFile.flush()
+    debugFile.close() 
+
 # 파일 읽고 처리하기
 def csv_process(filename):
   file = pd.read_csv("./csv/"+filename, engine='python', encoding='cp949')
   data = []
   weights = {}
-    
+  print(file)
   for i in range(0, len(file)):
-      name = str(file.loc[i]['이름'])
-      weight = file.loc[i]['몸무게']
-      medicine_name = str(file.loc[i]['약품명'])
-      num = file.loc[i]['섭취량']
+      name = str(file.loc[i]['개인ID'])
+      weight = file.loc[i]['추정체중(Kg)']
+      medicine_name = str(file.loc[i]['데이터베이스 제품명'])
+      num = file.loc[i]['1일 건기식 섭취량 (제품의 1일 권장섭취량 대비)']
       flag = False
       for person in data:
             if person['name'] == name:
-                  calculate(medicine_name, num, person['intake'])
+                  product_name = calculate(medicine_name, num, person['intake'])
+                  #if product_name is not None:
+                        #add_debug(name, product_name)
                   flag = True
                   break
                 
@@ -130,7 +147,9 @@ def csv_process(filename):
             dt = {}
             dt['name'] = name
             dt['intake'] = [] 
-            calculate(medicine_name, num, dt['intake'])
+            product_name = calculate(medicine_name, num, dt['intake'])
+            #if product_name is not None:
+                  #add_debug(name, product_name)
             weights[name] = weight
             data.append(dt)
             # person name, intake를 가지고 있는 dict 를 data 에 삽입
@@ -187,6 +206,11 @@ def exportFile():
             ingredients.append(ingredient[0])
             ingredientsName.append(ingredient[0].split("_")[2])
             
+      ingredients.append("납")
+      ingredients.append("총 수은")
+      ingredients.append("카드뮴")
+      ingredients.append("총 비소")
+      
       req=request.json
       filename = secure_filename(str(dt.datetime.now()).replace(" ", "").replace("-","_").replace(":", "_").replace(".", "_") + ".csv")
       
@@ -194,8 +218,9 @@ def exportFile():
       writer = csv.writer(exportFile)
       writer.writerow(ingredients)
       
-      for userInfo in req:
+      for userInfo in req['data']:
           rowInfo = []
+          heavyMetalPercentage = []
           rowInfo.append(userInfo['name'])
           for ingredientName in ingredientsName:
               isAppended = False
@@ -203,9 +228,30 @@ def exportFile():
                     if ingredientName == ingredients['word_name']:
                           rowInfo.append(ingredients['volume'])
                           isAppended = True
+                          if ingredients['word_name'] == "납":
+                                heavyMetalPercentage.append(ingredients['percentage'])
+                          elif ingredients['word_name'] == "총 수은":
+                                heavyMetalPercentage.append(ingredients['percentage'])
+                          elif ingredients['word_name'] == "카드뮴":
+                                heavyMetalPercentage.append(ingredients['percentage'])    
+                          elif ingredients['word_name'] == "총 비소":
+                                heavyMetalPercentage.append(ingredients['percentage'])  
                           break;
+                        
               if isAppended == False:
                     rowInfo.append(0)
+                    if ingredientName == "총 비소":
+                          heavyMetalPercentage.append(0)
+                    elif ingredientName == "총 수은":
+                          heavyMetalPercentage.append(0)
+                    elif ingredientName == "납":
+                          heavyMetalPercentage.append(0)  
+                    elif ingredientName == "카드뮴":
+                          heavyMetalPercentage.append(0) 
+                    
+          for percentage in heavyMetalPercentage:
+                rowInfo.append(percentage)
+          
           writer.writerow(rowInfo)
       
       exportFile.flush()
