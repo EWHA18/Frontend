@@ -46,7 +46,8 @@ def calculate(medicine_name, num, intake):
     product = database.execute(
         text("""
    SELECT
-      ingredient
+      ingredient,
+      heavy_intake
     FROM Medicine
       WHERE product = :medicine_name
   """), {
@@ -56,6 +57,7 @@ def calculate(medicine_name, num, intake):
         return medicine_name
 
     ingredients = product[0].split(":")
+    heavy_intakes = product[1].split(":")
     ingredients.pop()
 
     for ingredient in ingredients:
@@ -73,16 +75,33 @@ def calculate(medicine_name, num, intake):
         for i in range(0, len(intake)):
             if intake[i]['word_id'] == word_id:
                 intake[i]['volume'] += volume * float(num)
+                for heavy_intake in heavy_intakes:
+                    if heavy_intake != "":
+                        heavy_field = heavy_intake.split("_")
+                        heavy_name = heavy_field[2]
+                        heavy_volume = float(heavy_field[4])
+                        if heavy_name == word_name:
+                            intake[i]['heavy_volume'] += heavy_volume * float(num)
+                    
                 prev = True
 
         if (prev == False):
+            heavy_volume = float(0)
+            for heavy_intake in heavy_intakes:
+                if heavy_intake != "":
+                    heavy_field = heavy_intake.split("_")
+                    heavy_name = heavy_field[2]
+                    if heavy_name == word_name:
+                            heavy_volume = float(heavy_field[4]) * float(num)
+                        
             data = {
                 "word_id": word_id,
                 "word_name": word_name,
                 "volume": volume * float(num),
                 "unit": unit,
                 "isHeavyMetal": isHeavyMetal,
-                "percentage": 0
+                "percentage": 0,
+                "heavy_volume": heavy_volume
             }
             intake.append(data)
 
@@ -100,8 +119,10 @@ def func():
         weight = medicine['weight']
     for ingredient in intake:
         if ingredient['word_name'] in limit:
-            ingredient['percentage'] = ingredient['volume'] / (
-                limit[ingredient['word_name']] * float(weight))
+            print(ingredient['word_name'])
+            print(ingredient['heavy_volume'])
+            ingredient['percentage'] = ingredient['heavy_volume'] / (
+                limit[ingredient['word_name']] * float(weight)) * 100
             #0.264/1000 *A
             #10/(0.000264*A) *100%
             #volume/(limit['성분']*몸무게)*100
@@ -187,8 +208,8 @@ def csv_process(filename):
     for person in data:
         for ingredient in person['intake']:
             if ingredient['word_name'] in limit:
-                ingredient['percentage'] = ingredient['volume'] / (limit[ingredient['word_name']] * weights[person['name']])
-
+                ingredient['percentage'] = ingredient['heavy_volume'] / (limit[ingredient['word_name']] * weights[person['name']]) * 100
+    
     add_debug(NanArray)
     return data
 
