@@ -1,9 +1,11 @@
-import axios from 'axios';
+//File Upload version
+import axios from 'axios'; //서버 연결을 위해 import axios
 import React, { useState, useRef, useCallback } from 'react';
-import {Link, Route} from 'react-router-dom';
+import {Link, Route} from 'react-router-dom'; //링크 연결을 위해 import Link
 import '../index.css';
 
 const FileUpload = () => {
+	// 변수 모음
 	const [selectedFile, setSelectedFile] = useState(null);
 	const [intake, setIntake] = useState([]);
 	const [heavy, setHeavy] = useState([]);
@@ -12,11 +14,13 @@ const FileUpload = () => {
 	const [checked,setCheck] = useState([]);
 	const [index, setIndex] = useState([]);
 	const [show_state,setShow] = useState([]);
-	const [data,setData] = useState([]);         // result 그 자체
+	const [data,setData] = useState([]);         // Result data
 	const [result,setResult] = useState(false);  // CSV 결과파일 저장 - CSV 결과 반환 유무 
 	const onFileChange = e => {
 		setSelectedFile(e.target.files[0]);
 	};
+
+	// Upload input file
 	const onFileUpload = () => {
 		const formData = new FormData();
 		formData.append("file", selectedFile, selectedFile.name);
@@ -45,6 +49,7 @@ const FileUpload = () => {
 			});
 	};
 
+	// Input File data information
 	const fileData = () => {
 		if (selectedFile) {
 			return (
@@ -58,6 +63,8 @@ const FileUpload = () => {
 			);
 		}
 	};
+
+	// Print result by toggle switch(전체 보기/중금속 보기)
 	const heavy_button = () => {
 		if(!checked){
 		  setTotal(heavy);
@@ -70,6 +77,7 @@ const FileUpload = () => {
 		}
 	  }
 	
+	// Save result by file  
 	const onSaveResult = () => {
 		const final = {data:data}
 		axios({
@@ -87,6 +95,10 @@ const FileUpload = () => {
 		link.click();
 	 });
 	} 
+
+    // HTML form
+    // 입력받는 항목은 CSV 파일
+    // 출력하는 항목은 사용자 이름, 성분명, 성분 섭취량, 성분 초과 함유량
 	return (
 		<div>
 			<div className="header">
