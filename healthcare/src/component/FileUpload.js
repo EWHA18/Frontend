@@ -111,7 +111,7 @@ const FileUpload = () => {
 					{index.map(i => (
 					<div>
 						<p>이름: {name[i]}</p>
-						{total[i].map(t => <li key={t.word_name}>{t.word_name} {t.volume} {t.unit} 
+						{total[i].map(t => <li key={t.word_name}>{t.word_name} {(Math.round(t.volume*1000)/1000).toFixed(3)} {t.unit} 
 						{t.percentage==0 ? <p/> : ' ('+(Math.round(t.percentage*1000)/1000).toFixed(3)+'%)'}  </li>)} <br/>
 					</div>
 				))}
