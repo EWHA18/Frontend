@@ -1,3 +1,7 @@
+/*
+작성자 : 장진희
+작성일 : 2021.11.07
+ */
 import React, { useState, useRef, useCallback } from 'react';
 import {Link, Route} from 'react-router-dom';
 import '../index.css';
@@ -5,14 +9,15 @@ import InputMedicine from './InputMedicine';
 import InputMedicineList from './InputMedicineList';
 import axios from 'axios';
 
+//메인페이지(단일 사용자 입력 페이지)
 const Main = ()=>{
-  const [medicines,setMedicines] = useState([]); 
   const nextId = useRef(1);
-  const [heavy,setHeavy] = useState([]);
-  const [output,setOutput] = useState([]);
-  const [test,setTest] = useState([]);
-  const [checked,setCheck] = useState([]);
-  const [show_state,setShow] = useState([]);
+  const [medicines,setMedicines] = useState([]); //입력으로 들어온 건강기능식품의 배열
+  const [heavy,setHeavy] = useState([]); //중금속 성분만 담은 배열
+  const [output,setOutput] = useState([]); //전체 성분을 담은 배열
+  const [list,setList] = useState([]); //실제 보여지는 성분들의 배열
+  const [checked,setCheck] = useState(false); //중금속만 보여주기 여부
+  const [title,setTitle] = useState(""); //중금속만 보기/전체보기 버튼의 글씨
 
   const onInsert = useCallback(
     data => {
@@ -23,54 +28,50 @@ const Main = ()=>{
         intake: data.get('intake')
   };
   setMedicines(medicines.concat(medicine));
-
   nextId.current += 1;
 },[medicines]);
 
-const onClick = async() => {
-  const final = {data:medicines}
-  await axios.post("http://localhost:5000/api/sendintake",final).then(
+const onClick = async() => { //입력값을 post하여 반환값을 배열에 저장
+  await axios.post("http://localhost:5000/api/sendintake",{data:medicines}).then(
       async response=>{
-        console.log(response.data.data.intake);
-        setHeavy(response.data.data.intake.filter(intake_element => intake_element.isHeavyMetal==true));       
+        setHeavy(response.data.data.intake.filter(intake_element => intake_element.isHeavyMetal===true));       
         setOutput(response.data.data.intake); 
-        setTest(response.data.data.intake);
-        setCheck(false);
-        setShow("중금속만 보기");
+        setList(response.data.data.intake);
+        setTitle("중금속만 보기");
       })
 }
-const heavy_button = () => {
+const heavy_button = () => { //중금속만 보기 여부를 선택하는 버튼
   if(!checked){
-    setTest(heavy);
+    setList(heavy);
     setCheck(true);
-    setShow("전체 보기");
+    setTitle("전체 보기");
   }else{
-    setTest(output);
+    setList(output);
     setCheck(false);
-    setShow("중금속만 보기");
+    setTitle("중금속만 보기");
   }
 }
   return (
     <div>
       <div className="header">
         <h1>건강기능식품 프로젝트</h1>
-        <Link to = '/file'><span className="usermode">(단일)사용자 직접 입력</span></Link>
+        <Link to = '/file'><span className="usermode">(단일)사용자 직접 입력</span></Link> 
       </div>
       <div className="body">
         <div className="form">
           <InputMedicine onInsert={onInsert}/>
         <button className="sendBtn" onClick={onClick}>총 성분 섭취량 구하기</button>
-        <button className="heavyBtn" onClick={heavy_button}>{show_state}</button>
+        <button className="heavyBtn" onClick={heavy_button}>{title}</button>
         </div>
         <div className="input">
           <h3>Input</h3><InputMedicineList medicines={medicines}/>
         </div>
         <div className="output">
           <h3>Output</h3>
-          {test.map(intake_element => (
+          {list.map(intake_element => (
                 <div key={intake_element.word_id} className="medicine-">
-                    <li>{intake_element.word_name} {intake_element.volume} {intake_element.unit} 
-                    {intake_element.percentage==0 ? <p/> : ' ('+(Math.round(intake_element.percentage*1000)/1000)+'%)'}</li>
+                    <li>{intake_element.word_name} {(Math.round(intake_element.volume*1000)/1000).toFixed(3)} {intake_element.unit} 
+                    {intake_element.percentage===0 ? <p/> : ' ('+(Math.round(intake_element.percentage*1000)/1000).toFixed(3)+'%)'}</li>
                 </div>
             ))}
         </div>  
