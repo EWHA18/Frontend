@@ -28,7 +28,7 @@ _사용자가 입력하는 건강기능식품(의약품) 속 성분들(중금속
 ## ✏ Initialization
 - clone the Repository
 ```
-$ git clone 
+$ git clone https://github.com/EWHA18/Frontend.git
 ```
 <br/>
 
@@ -48,4 +48,4 @@ $ flask run
 <br/>
 
 ## ✏ Team Members
-Our Team Name : **Kim ChOI** <- Our last name is *Kim + Ch(oi) + O(=Oh) + I(=Lee)*
+
